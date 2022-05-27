@@ -1,0 +1,112 @@
+.........2022-01-20........
+-------------gender-----------
+              precision    recall  f1-score   support
+
+      female     0.6564    0.9086    0.7622      7399
+        male     0.8148    0.4580    0.5864      6494
+
+    accuracy                         0.6980     13893
+   macro avg     0.7356    0.6833    0.6743     13893
+weighted avg     0.7304    0.6980    0.6800     13893
+
+-------------hair-----------
+              precision    recall  f1-score   support
+
+  short_hair     0.9876    0.1243    0.2209      9603
+   long_hair     0.2019    0.9930    0.3355      2142
+
+    accuracy                         0.2828     11745
+   macro avg     0.5947    0.5587    0.2782     11745
+weighted avg     0.8443    0.2828    0.2418     11745
+
+-------------hat-----------
+              precision    recall  f1-score   support
+
+          no     0.9234    0.9803    0.9510     11745
+         yes     0.8378    0.5554    0.6680      2148
+
+    accuracy                         0.9146     13893
+   macro avg     0.8806    0.7679    0.8095     13893
+weighted avg     0.9102    0.9146    0.9073     13893
+
+-------------glasses-----------
+              precision    recall  f1-score   support
+
+          no     0.9483    0.4718    0.6301     12713
+         yes     0.1127    0.7229    0.1950      1180
+
+    accuracy                         0.4931     13893
+   macro avg     0.5305    0.5973    0.4126     13893
+weighted avg     0.8773    0.4931    0.5932     13893
+
+-------------face_mask-----------
+              precision    recall  f1-score   support
+
+          no     0.9958    0.3909    0.5615     13204
+         yes     0.0766    0.9681    0.1419       689
+
+    accuracy                         0.4196     13893
+   macro avg     0.5362    0.6795    0.3517     13893
+weighted avg     0.9502    0.4196    0.5406     13893
+
+-------------body_pose-----------
+                precision    recall  f1-score   support
+
+    front_pose     0.5523    0.8048    0.6551      4185
+     side_pose     0.5237    0.8711    0.6541      4686
+turn_back_pose     1.0000    0.0000    0.0000      5022
+
+      accuracy                         0.5362     13893
+     macro avg     0.6920    0.5586    0.4364     13893
+  weighted avg     0.7045    0.5362    0.4180     13893
+
+-------------visible-----------
+              precision    recall  f1-score   support
+
+    fullbody     0.8336    0.4897    0.6170      1852
+   upperbody     0.9262    0.9850    0.9547     12041
+
+    accuracy                         0.9190     13893
+   macro avg     0.8799    0.7374    0.7858     13893
+weighted avg     0.9139    0.9190    0.9097     13893
+
+-------------backpack-----------
+              precision    recall  f1-score   support
+
+          no     0.9885    0.6044    0.7501     13337
+         yes     0.0805    0.8309    0.1468       556
+
+    accuracy                         0.6135     13893
+   macro avg     0.5345    0.7177    0.4485     13893
+weighted avg     0.9521    0.6135    0.7260     13893
+
+-------------handbag-----------
+              precision    recall  f1-score   support
+
+          no     0.9126    0.6069    0.7290     10971
+         yes     0.3462    0.7817    0.4799      2922
+
+    accuracy                         0.6436     13893
+   macro avg     0.6294    0.6943    0.6044     13893
+weighted avg     0.7934    0.6436    0.6766     13893
+
+-------------ub_length-----------
+              precision    recall  f1-score   support
+
+       short     0.7619    0.4030    0.5271      7028
+        long     0.5877    0.8711    0.7018      6865
+
+    accuracy                         0.6343     13893
+   macro avg     0.6748    0.6370    0.6145     13893
+weighted avg     0.6758    0.6343    0.6135     13893
+
+-------------lb_length-----------
+              precision    recall  f1-score   support
+
+       short     0.5860    0.1403    0.2264      2210
+        long     0.8329    0.9774    0.8994      9687
+
+    accuracy                         0.8219     11897
+   macro avg     0.7094    0.5588    0.5629     11897
+weighted avg     0.7870    0.8219    0.7743     11897
+

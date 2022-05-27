@@ -1,0 +1,47 @@
+5 attributes:
+    age,gender,ub_length,lb_length,staff
+    backbone: resnet50
+    data: 'VCR' + vin3s 
+    vin3s_141_171_task_0000
+    vin3s_141_171_task_0001
+    vin3s_141_171_task_0002
+    vin3s_141_171_task_0003
+    vin3s_141_171_task_0004
+    vin3s_141_171_task_0005
+    vin3s_141_171_task_0006
+    vin3s_141_171_task_0007
+    vin3s_141_171_task_0008
+    vin3s_141_171_task_0009
+    vin3s_141_171_task_0010
+    vin3s_141_171_task_0011
+    vin3s_20_140_task_0000
+    vin3s_20_140_task_0001
+    vin3s_20_140_task_0002
+    vin3s_20_140_task_0003
+    vin3s_20_140_task_0004
+    vin3s_20_140_task_0005
+    vin3s_20_140_task_0006
+    vin3s_20_140_task_0007
+    vin3s_20_140_task_0008
+    vin3s_20_140_task_0009
+    vin3s_20_140_task_0010
+    vin3s_20_140_task_0011
+    vin3s_20_140_task_0012
+    vin3s_20_140_task_0013
+    vin3s_20_140_task_0014
+    vin3s_20_140_task_0015
+    vin3s_20_140_task_0016
+    vin3s_20_140_task_0017
+    vin3s_20_140_task_0018
+    vin3s_20_140_task_0019
+    vin3s_20_140_task_0020
+    vin3s_20_140_task_0021
+    vin3s_20_140_task_0022
+    vin3s_20_140_task_0023
+    vin3s_20_140_task_0024
+    vin3s_entry_task_0000
+    vin3s_entry_task_0001
+    vin3s_entry_task_0002
+
+
+    
