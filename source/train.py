@@ -25,79 +25,14 @@ logging.basicConfig()
 def train(opt):
     softmax = torch.nn.Softmax(1)
     os.makedirs(opt.save_dir, exist_ok=True)
-    # read train_csv
     df_train = []
     if isinstance(opt.train_csv,str):
         opt.train_csv = [opt.train_csv]
     for file in opt.train_csv:
         df_train.append(pd.read_csv(file))
     df_train = pd.concat(df_train,axis=0)
-    # print(len(df_train))
     df_train = df_train[df_train.quality==1]
-    # print(len(df_train))
-    # df_train = df_train[df_train.visible==1]
     df_train = df_train[df_train.age2!=-1]
-    # df_train = df_train.dropna()
-    # print(len(df_train))
-    # df_train.to_csv('test_csv.csv')
-    # exit()
-    # df_train = pd.read_csv(opt.train_csv[0])
-    # df_train = df_train[:1000]
-    # a = df_train
-    # b = a[:28918]
-    # c = a[43051:]
-    # df_train = pd.concat([b,c],axis=0)
-    # df_train = df_train[df_train.body_pose!=2]
-    # df_train = df_train[df_train.quality==1]
-    # df_train1 = pd.read_csv(opt.train_csv[1])
-    # df_train2 = pd.read_csv(opt.train_csv[2])
-
-    # df_train0 = df_train.sample(frac=1).reset_index(drop=True)
-    # df_train1 = df_train1.sample(frac=1).reset_index(drop=True)
-    # df_train2 = df_train2.sample(frac=1).reset_index(drop=True)
-
-
-
-    # # df_train = pd.concat([df_train,df_train1,df_train2],axis=0)
-
-    # df_val_1_age_0 = df_train1[df_train1.age==0][:1000] #crawl
-    # df_val_1_age_2 = df_train1[df_train1.age==2][:1000] #crawl
-    # df_val_2_age_0 = df_train2[df_train2.age==0][:100] #bigdata
-    # df_val_2_age_2 = df_train2[df_train2.age==2][:100] #bigdata
-    # df_val_age_0 = df_train0[df_train0.age==0][:100]
-    # df_val_age_1 = df_train0[df_train0.age==1][:1200]
-    # df_val_age_2 = df_train0[df_train0.age==2][:100]
-
-    # df_train_1_age_0 = df_train1[df_train1.age==0][1000:] #crawl
-    # df_train_1_age_2 = df_train1[df_train1.age==2][1000:] #crawl
-    # df_train_2_age_0 = df_train2[df_train2.age==0][100:] #bigdata
-    # df_train_2_age_2 = df_train2[df_train2.age==2][100:] #bigdata
-    # df_train_age_0 = df_train0[df_train0.age==0][100:]
-    # df_train_age_1 = df_train0[df_train0.age==1][1200:]
-    # df_train_age_2 = df_train0[df_train0.age==2][100:]
-
-    # df_val = pd.concat([df_val_1_age_0,
-    #                     df_val_1_age_2,
-    #                     df_val_2_age_0,
-    #                     df_val_2_age_2,
-    #                     df_val_age_0,
-    #                     df_val_age_1,
-    #                     df_val_age_2,],axis=0)
-    # df_train = pd.concat([df_train_1_age_0,
-    #                     df_train_1_age_2,
-    #                     df_train_2_age_0,
-    #                     df_train_2_age_2,
-    #                     df_train_age_0,
-    #                     df_train_age_1,
-    #                     df_train_age_2,],axis=0)
-
-    # import shutil
-    # for i in tqdm(df_train.iloc,total=len(df_val)):
-    #     age = i.age
-    #     old_path = os.path.join(opt.TRAIN_FOLDER,i.path)
-    #     new_path = os.path.join('aaaaaaaaa',str(age),os.path.basename(i.path))
-    #     shutil.copy(old_path,new_path)
-    # exit()
 
     random.seed(1)
     df_train = df_train.sample(frac=1,random_state=1).reset_index(drop=True)
@@ -243,8 +178,6 @@ def train(opt):
     
     pbar_epoch = tqdm(range(start_epoch,opt.epochs),total=opt.epochs,initial=start_epoch)
     for epoch in pbar_epoch:
-        # training phase.
-        # if epoch!=0 and hasattr(opt,'sampling_balance_data'):
         # loader['train'].dataset.on_epoch_end(n=500,df_list_train=[df_train_1_age_0,
         #                                                 df_train_1_age_2,
         #                                                 df_train_2_age_0,
