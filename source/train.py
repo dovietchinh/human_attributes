@@ -37,9 +37,6 @@ def train(opt):
     random.seed(1)
     df_train = df_train.sample(frac=1,random_state=1).reset_index(drop=True)
     
-    # df_val = df_val.sample(frac=1).reset_index(drop=True)
-    # df_train_0 = df_train3[df_train3.age==0]
-    # df_train_0 = df_train3[df_train3.age==0]
 
 
     
@@ -52,7 +49,7 @@ def train(opt):
             df_val.append(pd.read_csv(file))
         df_val = pd.concat(df_val,axis=0)
     else:
-        # df_train = df_train.sample(frac=1).reset_index(drop=True)
+        df_train = df_train.sample(frac=1).reset_index(drop=True)
         len_ = len(df_train)
         df_val = df_train[int(0.8*len_):]
         df_train = df_train[:int(0.8*len_)]
@@ -77,7 +74,6 @@ def train(opt):
                                 preprocess=preprocess,
                                 augment=True,
                                 augment_params=opt.augment_params)
-                                # augment_params_1=opt.augment_params_1)
 
     ds_val = LoadImagesAndLabels(df_val,
                                 data_folder=opt.VAL_FOLDER,
@@ -101,13 +97,14 @@ def train(opt):
     callback = CallBack(opt.save_dir)
 
     # init model
-    model_config = []
-    for k,v in opt.classes.items():
-        model_config.append(len(v))
+#    model_config = []
+#    for k,v in opt.classes.items():
+#        model_config.append(len(v))
 
     # init model
 
-    model = model_fn[opt.model_name](model_config=model_config)
+ #   model = model_fn[opt.model_name](model_config=model_config)
+    model = MobileNetV2()
 
     if opt.DEBUG: 
         x = np.random.randint(0,255,(1,3,224,224))
@@ -131,8 +128,7 @@ def train(opt):
             LOGGER.info(' resume training from last checkpoint')
     else:                                               #load from ImagesNet weight
         LOGGER.info(f"weight path : {opt.weights} does'nt exist, ImagesnNet weight will be loaded ")
-        # model = loadingImageNetWeight(model,name=opt.model_name,model_urls=model_urls)
-        # model.load_state_dict(torch.load('source/models/mobilenet_v2-b0353104.pth'))
+        model = loadingImageNetWeight(model,name=opt.model_name,model_urls=model_urls)
        
     model = model.to(device)
 
@@ -162,8 +158,8 @@ def train(opt):
             class_weights = class_weights.to(device)
         else: 
             class_weights = None
-        criteriors.append(FocalLoss(gamma=opt.gamma,class_weights=class_weights,label_smoothing=opt.label_smoothing,reduction='sum'))
-        # criteriors.append(torch.)
+        #criteriors.append(FocalLoss(gamma=opt.gamma,class_weights=class_weights,label_smoothing=opt.label_smoothing,reduction='sum'))
+        criteriors.append(torch.nn.MSELoss(reduction='mean'))
 
     if not isinstance(opt.task_weights,list):
         task_weights = [opt.task_weights]
@@ -178,14 +174,6 @@ def train(opt):
     
     pbar_epoch = tqdm(range(start_epoch,opt.epochs),total=opt.epochs,initial=start_epoch)
     for epoch in pbar_epoch:
-        # loader['train'].dataset.on_epoch_end(n=500,df_list_train=[df_train_1_age_0,
-        #                                                 df_train_1_age_2,
-        #                                                 df_train_2_age_0,
-        #                                                 df_train_2_age_2,
-        #                                                 df_train_age_0,
-        #                                                 df_train_age_1,
-        #                                                 df_train_age_2,])
-        
         model.train()
         # model.requires_grad=True
         pbar = enumerate(loader['train'])
@@ -210,7 +198,6 @@ def train(opt):
             
             with torch.set_grad_enabled(cuda):
                 preds = model(imgs)
-                # loss = torch.Tensor([0])
                 loss= 0
                 for index,criterior in enumerate(criteriors):
                     # LOGGER.debug(preds[index])
@@ -221,7 +208,6 @@ def train(opt):
                     loss += opt.task_weights[index]*criterior(preds[index][labels[index]!=-1],(labels[index][labels[index]!=-1]).type(torch.uint8)) / (labels[index]!=-1).sum()
 
                 optimizer.zero_grad()
-                # print(loss)
                 loss.backward()
                 optimizer.step()    
                 epoch_loss += loss * imgs.size(0)
@@ -238,8 +224,6 @@ def train(opt):
             y_pred.append([])
         with torch.no_grad():
             for i, (imgs, labels, _) in tqdm(enumerate(loader['val']),total=len(loader['val']),desc='evaluating',leave=False):
-                # print(imgs)
-                # try:
                 labels = labels.permute(1,0)
                 
 
@@ -248,26 +232,12 @@ def train(opt):
                 preds = model(imgs)
                 loss = 0
                 for index,criterior in enumerate(criteriors):
-                    # loss += opt.task_weights[index]*criterior(preds[index],labels[index])
                     loss += opt.task_weights[index]*criterior(preds[index][labels[index]!=-1],(labels[index][labels[index]!=-1]).type(torch.uint8)) / (labels[index]!=-1).sum()                      
                 epoch_loss += loss * imgs.size(0) # imgs.size = batch_size
-                # labels = [label.cpu().numpy().ravel() for label in labels]
-            # LOGGER.info(f'len_labels: {len(labels[0])}')
-                # preds = [x.detach().cpu().numpy().argmax(axis=-1).ravel() for x in preds]
-                # for j in range(len(opt.classes)):
-                    # y_true[j].append(labels[j])
-                    # y_pred[j].append(preds[j])
-        # y_true = [ np.concatenate(x, axis=0) for x in y_true ]
-        # y_pred = [ np.concatenate(x, axis=0) for x in y_pred ]
+
         epoch_loss = epoch_loss/len(loader['val'].dataset)
         loss_val_log.append(epoch_loss)
         
-        # fi - macro avg accuracy
-
-        # fi = sklearn.metrics.classification_report(y_true,y_pred,digits=4,zero_division=1)
-        # fi = fi.split('\n')[-3].split()[-2]
-        # fi = float(fi)
-
         fi = epoch_loss.item()
 
         if stopper(epoch,fi):   #if EarlyStopping condition meet
@@ -326,5 +296,4 @@ if __name__ =='__main__':
         LOGGER.setLevel(logging.DEBUG)
     else:
         LOGGER.setLevel(logging.INFO)
-    opt.classes['age2'] = list(range(76))
     train(opt)

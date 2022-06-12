@@ -2,7 +2,7 @@
 # train_csv : /u01/Intern/chinhdv/code/M_classification_torch/config/a/76classes_train_1103.csv
 # val_csv: /u01/Intern/chinhdv/code/M_classification_torch/config/a/76classes_val_1103.csv
 # TRAIN_FOLDER : /u01/DATA/HUMAN_ATTRIBUTE/PA_100K/data
-TRAIN_FOLDER : /u01/Intern/chinhdv/github/auto_upload_cvat/hmat
+TRAIN_FOLDER : DATA_HUMAN_ATTRIBUTES/images
 
 train_csv : [
     # /u01/Intern/chinhdv/code/multi-task-classification/human_attribute_project/trainPA100K.csv,
@@ -82,14 +82,7 @@ classes:
   # handbag     : ["no", "yes"]
   ub_length   : [short, long]
   lb_length   : [short, long]
-  staff       : ["no", SalesAssistant, TechnicalStaff]
-  # action      : ['sitting','standing']
-  # holding_object: ["no", "yes"]
-#   crowd       : ["yes","no"]
-
-
-# age, gender, shape, hair, hat, glasse
-
+  #  staff       : ["no", SalesAssistant, TechnicalStaff]
 
 format_index: True
 
@@ -98,6 +91,7 @@ task_weights : [1,1,1,1,1]
 # task_weights : 1
 class_weights:
     age: [2,1,2]
+    extract_age : [0,100]
     gender: [1,1]
     # hair: [1,2]
     # hat         : [1, 1]
@@ -109,5 +103,5 @@ class_weights:
     # handbag     : [1, 4]
     ub_length   : [1, 1]
     lb_length   : [1, 1]
-    staff       : [1, 2, 2]
+    #    staff       : [1, 2, 2]
     # holding_object: [1, 4]

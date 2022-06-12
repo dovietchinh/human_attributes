@@ -190,6 +190,7 @@ class MobileNetV2(nn.Module):
             )
             self.head.append(classifier)
         self.sm = torch.nn.Softmax(1)
+        self.sigmoid = torch.nn.Sigmoid()
         # weight initialization
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -222,7 +223,7 @@ class MobileNetV2(nn.Module):
 
     def predict(self,x):
         outputs = self(x)
-        outputs =[self.sm(output) for output in outputs]
+        outputs =[self.sigmoid(output) for output in outputs]
         return outputs
     # def _preprocessing(self,img):
     #     """[summary]

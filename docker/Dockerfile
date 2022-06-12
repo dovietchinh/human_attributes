@@ -10,5 +10,8 @@ RUN pip3 install tqdm
 RUN pip3 install PyYAML
 RUN pip3 install opencv-python 
 RUN pip3 install torch==1.10
+RUN pip3 install dvc
+RUN apt-get install git
+RUN git config --global --add safe.directory /workspace
 WORKDIR /workspace
 

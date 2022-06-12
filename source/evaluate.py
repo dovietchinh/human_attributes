@@ -28,20 +28,6 @@ def evaluate(opt):
         df  = pd.read_csv(df)
         df_val.append(df)
     df_val = pd.concat(df_val, axis=0)
-    # df_val = df_val[df_val.body_pose!=2]
-    # df_val = df_val[df_val.action==1]
-
-    # import shutil
-    # for i in tqdm(df_val.iloc,total=len(df_val)):
-    #     age = i.age
-    #     old_path = os.path.join(opt.TEST_FOLDER,i.path)
-    #     new_path = os.path.join('aaaaaaaaa',str(age),os.path.basename(i.path))
-    #     shutil.copy(old_path,new_path)
-    # exit()
-
-    # df_val = df_val[df_val.visible==0]
-    # df_val = df.sample(frac=1).reset_index(drop_index=True)
-    
     
     if not os.path.isfile(opt.weights): 
         LOGGER.info(f"{opt.weights} is not a file")
@@ -54,23 +40,7 @@ def evaluate(opt):
     # init model
     model = model_fn[opt.model_name](model_config=model_config)
     model.load_state_dict(checkpoint['state_dict'])
-    # model = open('model_trt')
-    # import torch
-    # from torch2trt import torch2trt
-    # from resnet import resnet50
-    # import pickle
-    # create some regular pytorch model...
-    # model = alexnet(pretrained=True).eval().cuda()
-    # model = resnet50(model_config=[3,2,2,2,3]).cuda()
-    # weights = "/u01/Intern/chinhdv/code/multi-task-classification/result/runs_human_attributes_17/best_17.pt"
-    # model.load_state_dict(torch.load(weights)['state_dict'])
-    # create example data
-    # x = torch.ones((1, 3, 224, 224)).cuda()
     model.eval()
-    # model(x)
-    # convert to TensorRT feeding sample data as input
-    # model_trt = torch2trt(model, [x])
-    # model = model_trt
 
     padding = getattr(checkpoint['meta_data'], 'padding')
     img_size = getattr(checkpoint['meta_data'], 'img_size')
@@ -104,17 +74,11 @@ def evaluate(opt):
             preds = model.predict(imgs)
             labels = labels.permute(1,0)
             labels = [label.to(device).cpu().numpy().ravel() for label in labels]
-            # LOGGER.info(f'len_labels: {len(labels[0])}')
             preds = [x.detach().cpu().numpy().argmax(axis=-1).ravel() for x in preds]
             
-            # print(labels.shape)
-            # print(preds.shape)
             
             
             for j in range(len(opt.classes)):
-                # print(labels[j].shape)
-                # print(preds[j].shape)
-                # exit()
                 print(j)
                 print(len(y_pred))
                 y_true[j].append(labels[j])
@@ -123,13 +87,7 @@ def evaluate(opt):
     y_true = [ np.concatenate(x, axis=0) for x in y_true ]
     y_pred = [ np.concatenate(x, axis=0) for x in y_pred ]
     
-    # LOGGER.debug(f"y_true[0]_len = {len(y_true[0])}")
-    # LOGGER.debug(f"y_true[1]_len = {len(y_true[1])}")
-    # LOGGER.debug(f"y_pred[0]_len = {len(y_pred[0])}")
-    # LOGGER.debug(f"y_pred[1]_len = {len(y_true[1])}")
     for i,(k,v) in enumerate(opt.classes.items()):
-        # if k=='age2':
-            # continue
         y_true_i = y_true[i]
         y_pred_i = y_pred[i]
         y_pred_i = y_pred_i[y_true_i!=-1]
@@ -141,15 +99,7 @@ def evaluate(opt):
                 with open('abc.txt','a') as f:
                     f.write(f"{asd} {fgh}\n")
             continue
-        # print(f'-------------{k}-----------\n')
-        # print(y_true_i.shape)
-        # print(y_pred_i.shape)
-        # print(np.unique(y_true_i))
-        # print(np.unique(y_pred_i))
         
-        
-
-
 def parse_opt(know):
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', type=str, default='', help="checkpoint path")
@@ -174,7 +124,6 @@ def main():
         setattr(opt,k,v) 
     assert isinstance(opt.classes,dict), "Invalid format of classes in data_config.yaml"
     # assert len(opt.task_weights) == len(opt.classes), "task weight should has the same length with classes"
-    # print(opt['batch_size'])
     opt.classes['age2'] = list(range(76))
     evaluate(opt)
 

@@ -3,3 +3,4 @@ __pycache__
 scripts/
 pipeline/sample
 DATA_HUMAN_ATTRIBUTES
+models_registry

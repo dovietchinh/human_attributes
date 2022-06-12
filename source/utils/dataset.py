@@ -95,7 +95,10 @@ class LoadImagesAndLabels(torch.utils.data.Dataset):
         # img = np.stack([img,img],axis=0)
         # print(len(labels))
         labels = torch.Tensor(labels)
+        labels /= 255.
         
         # labels = [labels,labels]
+        print(labes,path)
+        exit()
         return img,labels,path
 
