@@ -24,7 +24,7 @@ batch_size : 64
 save_best: True
 device : cuda:0
 patience : 100    # For Early-Stopping
-save_dir : /u01/Intern/chinhdv/code/multi-task-classification/result/runs_human_attributes_15  # save checkpoint
+save_dir : result/version_0002  # save checkpoint
 visualize: True
 
 gamma: 0                       # gamma = 0 equivalent CrossEntropy 

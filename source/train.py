@@ -31,8 +31,8 @@ def train(opt):
     for file in opt.train_csv:
         df_train.append(pd.read_csv(file))
     df_train = pd.concat(df_train,axis=0)
-    df_train = df_train[df_train.quality==1]
-    df_train = df_train[df_train.age2!=-1]
+#    df_train = df_train[df_train.quality==1]
+#    df_train = df_train[df_train.age2!=-1]
 
     random.seed(1)
     df_train = df_train.sample(frac=1,random_state=1).reset_index(drop=True)
@@ -97,14 +97,14 @@ def train(opt):
     callback = CallBack(opt.save_dir)
 
     # init model
-#    model_config = []
-#    for k,v in opt.classes.items():
-#        model_config.append(len(v))
+    model_config = []
+    for k,v in opt.classes.items():
+        model_config.append(len(v))
 
     # init model
 
- #   model = model_fn[opt.model_name](model_config=model_config)
-    model = MobileNetV2()
+    model = model_fn[opt.model_name](model_config=model_config)
+    #model = MobileNetV2()
 
     if opt.DEBUG: 
         x = np.random.randint(0,255,(1,3,224,224))
@@ -152,12 +152,12 @@ def train(opt):
 
     criteriors = list()
     for label_name in opt.classes:
-        if opt.class_weights.get(label_name):
-            class_weights = torch.Tensor(opt.class_weights[label_name])
-            class_weights = class_weights/class_weights.sum()
-            class_weights = class_weights.to(device)
-        else: 
-            class_weights = None
+        #if opt.class_weights.get(label_name):
+        #    class_weights = torch.Tensor(opt.class_weights[label_name])
+        #    class_weights = class_weights/class_weights.sum()
+        #    class_weights = class_weights.to(device)
+        #else: 
+        class_weights = None
         #criteriors.append(FocalLoss(gamma=opt.gamma,class_weights=class_weights,label_smoothing=opt.label_smoothing,reduction='sum'))
         criteriors.append(torch.nn.MSELoss(reduction='mean'))
 
@@ -205,8 +205,8 @@ def train(opt):
                     # [ 1 ,2  3 , 1, 2 ] 
                     # [ 2, 1, ,-1, -1, 2] # 3
                     
-                    loss += opt.task_weights[index]*criterior(preds[index][labels[index]!=-1],(labels[index][labels[index]!=-1]).type(torch.uint8)) / (labels[index]!=-1).sum()
-
+                    #loss += opt.task_weights[index]*criterior(preds[index][labels[index]!=-1],(labels[index][labels[index]!=-1]).type(torch.uint8)) / (labels[index]!=-1).sum()
+                    loss += opt.task_weights[index]*criterior(preds[index][labels[index]!=-1.],(labels[index][labels[index]!=-1.]).type(torch.float)) / (labels[index]!=-1.).sum()
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()    
@@ -232,7 +232,8 @@ def train(opt):
                 preds = model(imgs)
                 loss = 0
                 for index,criterior in enumerate(criteriors):
-                    loss += opt.task_weights[index]*criterior(preds[index][labels[index]!=-1],(labels[index][labels[index]!=-1]).type(torch.uint8)) / (labels[index]!=-1).sum()                      
+                    #loss += opt.task_weights[index]*criterior(preds[index][labels[index]!=-1],(labels[index][labels[index]!=-1]).type(torch.uint8)) / (labels[index]!=-1).sum()                      
+                    loss += opt.task_weights[index]*criterior(preds[index][labels[index]!=-1],(labels[index][labels[index]!=-1]).type(torch.float)) / (labels[index]!=-1).sum()                      
                 epoch_loss += loss * imgs.size(0) # imgs.size = batch_size
 
         epoch_loss = epoch_loss/len(loader['val'].dataset)
