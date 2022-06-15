@@ -215,6 +215,7 @@ class MobileNetV2(nn.Module):
         outputs = []
         for classifier in self.head:
             out = classifier(x)
+#            out = self.sigmoid(out)
             outputs.append(out)
         return outputs
 

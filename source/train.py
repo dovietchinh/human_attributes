@@ -206,7 +206,16 @@ def train(opt):
                     # [ 2, 1, ,-1, -1, 2] # 3
                     
                     #loss += opt.task_weights[index]*criterior(preds[index][labels[index]!=-1],(labels[index][labels[index]!=-1]).type(torch.uint8)) / (labels[index]!=-1).sum()
-                    loss += opt.task_weights[index]*criterior(preds[index][labels[index]!=-1.],(labels[index][labels[index]!=-1.]).type(torch.float)) / (labels[index]!=-1.).sum()
+                    #print(f'-------{index}------')
+                    #print("preds : ",preds[index])
+                    #print("labels: ",labels[index])
+                    
+                    loss_temp = opt.task_weights[index]*criterior(preds[index].view(-1),labels[index]) #/ len(labels[index])
+                    #print(loss_temp)
+                    loss += loss_temp
+#                print(loss)
+                #exit()
+                
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()    
@@ -233,7 +242,9 @@ def train(opt):
                 loss = 0
                 for index,criterior in enumerate(criteriors):
                     #loss += opt.task_weights[index]*criterior(preds[index][labels[index]!=-1],(labels[index][labels[index]!=-1]).type(torch.uint8)) / (labels[index]!=-1).sum()                      
-                    loss += opt.task_weights[index]*criterior(preds[index][labels[index]!=-1],(labels[index][labels[index]!=-1]).type(torch.float)) / (labels[index]!=-1).sum()                      
+#                    loss += opt.task_weights[index]*criterior(preds[index][labels[index]!=-1],(labels[index][labels[index]!=-1]).type(torch.float)) / (labels[index]!=-1).sum()                      
+                    loss_temp = opt.task_weights[index]*criterior(preds[index].view(-1),labels[index])# / len(labels[index])
+                    loss += loss_temp
                 epoch_loss += loss * imgs.size(0) # imgs.size = batch_size
 
         epoch_loss = epoch_loss/len(loader['val'].dataset)

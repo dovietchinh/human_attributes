@@ -86,8 +86,10 @@ class LoadImagesAndLabels(torch.utils.data.Dataset):
             # height = img.shape[0]
             # img = img[:height//2,:,:]
 
-        if self.augment:
-            img = self.augmenter(img)
+#        if self.augment:
+#            img = self.augmenter(img)
+        if random.random() > 0.5:
+            img = np.fliplr(img)
         if self.preprocess:
             img = self.preprocess(img, img_size=self.img_size, padding=self.padding)
         img = np.transpose(img, [2,0,1])
@@ -95,8 +97,9 @@ class LoadImagesAndLabels(torch.utils.data.Dataset):
         # img = np.stack([img,img],axis=0)
         # print(len(labels))
         labels = torch.Tensor(labels).type(torch.float)
-#        labels /= 255.
+        labels = labels/255.
         
         # labels = [labels,labels]
+
         return img,labels,path
 
