@@ -59,6 +59,7 @@ class LoadImagesAndLabels(torch.utils.data.Dataset):
         path = os.path.join(self.data_folder, item.path)
         assert os.path.isfile(path),f'this image : {path} is corrupted'
         img = cv2.imread(path, cv2.IMREAD_COLOR)
+        
         if img is None:
             LOGGER.info(f' this image : {path} is corrupted')
         labels = []
@@ -68,19 +69,24 @@ class LoadImagesAndLabels(torch.utils.data.Dataset):
         #     height = img.shape[0]
         #     img = img[:height//2,:,:]
 
-        for label_name in self.classes:
-            
-
-            label = item[label_name]
-            if label_name == 'age2':
-                if label < 0:
-                    label = -1
-                if label >75:
-                    label =75
-            # label = self.maping_name[label]
-            # if label_name == 'lb_length' and lb == -1:
-            #     label = -1
-            labels.append(label)
+#        for label_name in self.classes:
+#            label = item[label_name]
+#            labels.append(label)
+        if random.random() > 0.5:
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            labels.append(item["B_ub"])
+            labels.append(item["G_ub"])
+            labels.append(item["R_ub"])
+            labels.append(item["B_lb"])
+            labels.append(item["G_lb"])
+            labels.append(item["R_lb"])
+        else:
+            labels.append(item["R_ub"])
+            labels.append(item["G_ub"])
+            labels.append(item["B_ub"])
+            labels.append(item["R_lb"])
+            labels.append(item["G_lb"])
+            labels.append(item["B_lb"])
 
         # if random.random() > 0.5 and item.visible==0 and self.augment: #full_body
             # height = img.shape[0]
