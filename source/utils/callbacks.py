@@ -25,6 +25,7 @@ class CallBack:
         self.writer_train = SummaryWriter(os.path.join(save_dir,'tensorboard_log','train'))
         self.writer_val = SummaryWriter(os.path.join(save_dir,'tensorboard_log','train'))
         os.makedirs(os.path.join(save_dir,'tensorboard_log'), exist_ok=True)   
+        self.save_dir = save_dir
 
     def __call__(self,loss_train,loss_val,epoch):
         
@@ -32,14 +33,14 @@ class CallBack:
         self.writer_val.add_scalar('val',loss_val[-1],epoch)
         fig= plt.figure() 
         loss_train_list = []
-        loss_train_val = []
+        loss_val_list = []
         for i,j in zip(loss_train,loss_val):
-            loss_train.append(i.detach().cpu())
-            loss_val_loss.append(j.detach().cpu())
-        plt.plot(range(epoch),loss_train,label='train')
-        plt.plot(range(epoch),loss_val,label='val')
+            loss_train_list.append(i.detach().cpu())
+            loss_val_list.append(j.detach().cpu())
+        plt.plot(range(epoch+1),loss_train_list,label='train')
+        plt.plot(range(epoch+1),loss_val_list,label='val')
         plt.legend(loc='upper right')
-        plt.savefig(os.path.save_dir,'training.jpg')
+        plt.savefig(os.path.join(self.save_dir,'training.jpg'))
 
         
     # def __call__(self,loss_train,loss_val,
