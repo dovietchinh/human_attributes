@@ -34,7 +34,7 @@ class CallBack:
         loss_train_list = []
         loss_train_val = []
         for i,j in zip(loss_train,loss_val):
-            loss_train_loss.append(i.detach().cpu())
+            loss_train.append(i.detach().cpu())
             loss_val_loss.append(j.detach().cpu())
         plt.plot(range(epoch),loss_train,label='train')
         plt.plot(range(epoch),loss_val,label='val')
