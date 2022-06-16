@@ -341,5 +341,122 @@ def augmentation_test():
         # if cv2.waitKey(0)==ord('q'):
             # exit()
 
+class HumanColorAugment():
+    """
+    augmentation for human color project
+    """
+    def __init__(self):
+        pass
+    
+    def multiply(self,img,labels):
+        channel = cv2.split(img)
+        a = random.random() * 0.1 + 0.95
+        b = random.random() * 0.1 + 0.95
+        c = random.random() * 0.1 + 0.95
+
+        channel[0] = channel[0].astype('float32') * a
+        channel[0] = np.clip(channel[0],0,255).astype('uint8')
+        labels[2] = max(min(labels[2]*a,0),255)
+        labels[5] = max(min(labels[5]*a,0),255)
+
+        channel[1] = channel[1].astype('float32') * b
+        channel[1] = np.clip(channel[1],0,255).astype('uint8')
+        labels[1] = max(min(labels[1]*b,0),255)
+        labels[4] = max(min(labels[4]*b,0),255)
+
+        channel[2] = channel[2].astype('float32') * c
+        channel[2] = np.clip(channel[2],0,255).astype('uint8')
+        labels[0] = max(min(labels[0]*c,0),255)
+        labels[3] = max(min(labels[3]*c,0),255)
+
+        temp = []
+        temp.append([channel[0],labels[2],labels[5]])
+        temp.append([channel[1],labels[1],labels[4]])
+        temp.append([channel[2],labels[0],labels[3]])
+        random.shuffle(temp)
+        img = cv2.merge([temp[0][0],temp[1][0],temp[2][0]])
+        labels = []
+        labels.append(temp[2][1])
+        labels.append(temp[1][1])
+        labels.append(temp[0][1])
+        labels.append(temp[2][2])
+        labels.append(temp[1][2])
+        labels.append(temp[0][2])
+
+        return img,labels
+
+    def add(self,img,labels):
+        channel = cv2.split()
+        a = random.random() * 10 - 5
+        b = random.random() * 10 - 5
+        c = random.random() * 10 - 5
+
+
+        channel[0] = channel[0].astype('float32') + a
+        channel[0] = np.clip(channel[0],0,255).astype('uint8')
+        labels[2] = max(min(labels[2]+a,0),255)
+        labels[5] = max(min(labels[5]+a,0),255)
+
+        channel[1] = channel[1].astype('float32') + b
+        channel[1] = np.clip(channel[1],0,255).astype('uint8')
+        labels[1] = max(min(labels[1]+b,0),255)
+        labels[4] = max(min(labels[4]+b,0),255)
+
+        channel[2] = channel[2].astype('float32') + c
+        channel[2] = np.clip(channel[2],0,255).astype('uint8')
+        labels[0] = max(min(labels[0]+c,0),255)
+        labels[3] = max(min(labels[3]+c,0),255)
+
+        temp = []
+        temp.append([channel[0],labels[2],labels[5]])
+        temp.append([channel[1],labels[1],labels[4]])
+        temp.append([channel[2],labels[0],labels[3]])
+        random.shuffle(temp)
+        img = cv2.merge([temp[0][0],temp[1][0],temp[2][0]])
+        labels = []
+        labels.append(temp[2][1])
+        labels.append(temp[1][1])
+        labels.append(temp[0][1])
+        labels.append(temp[2][2])
+        labels.append(temp[1][2])
+        labels.append(temp[0][2])
+
+        return img,labels
+
+    def __call__(self,img,labels):
+        if random.random() > 0.5:
+            img,labels = self.multiply(img,labels)    
+        else:
+            img,labels = self.add(img,labels)
+        if random.random() > 0.5:
+            img = np.fliplr(img)
+        return img,labels
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ =='__main__':
     augmentation_test()

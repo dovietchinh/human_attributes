@@ -3,7 +3,7 @@ import os
 import cv2
 import yaml
 import logging
-from .augmentations import RandAugment
+from .augmentations import RandAugment, HumanColorAugment
 import numpy as np 
 # from .imbalance_data_handle import balance_data
 import pandas as pd
@@ -44,7 +44,8 @@ class LoadImagesAndLabels(torch.utils.data.Dataset):
                 for index,classes_name in enumerate(v):
                     self.maping_name[classes_name] = index
         if augment:
-            self.augmenter = RandAugment(augment_params=augment_params)
+#            self.augmenter = RandAugment(augment_params=augment_params)
+            self.augmenter = HumanColorAugment
             # self.on_epoch_end(n=5000)     
             self.csv =self.csv_origin   
         else:
@@ -59,53 +60,24 @@ class LoadImagesAndLabels(torch.utils.data.Dataset):
         path = os.path.join(self.data_folder, item.path)
         assert os.path.isfile(path),f'this image : {path} is corrupted'
         img = cv2.imread(path, cv2.IMREAD_COLOR)
-        
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         if img is None:
             LOGGER.info(f' this image : {path} is corrupted')
         labels = []
-        # lb = 0
-        # if random.random() > 0.5 and item.lb_length!= -1:
-        #     lb = -1
-        #     height = img.shape[0]
-        #     img = img[:height//2,:,:]
+        labels.append(item["B_ub"])
+        labels.append(item["G_ub"])
+        labels.append(item["R_ub"])
+        labels.append(item["B_lb"])
+        labels.append(item["G_lb"])
+        labels.append(item["R_lb"])
 
-#        for label_name in self.classes:
-#            label = item[label_name]
-#            labels.append(label)
-        if random.random() > 0.5:
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            labels.append(item["B_ub"])
-            labels.append(item["G_ub"])
-            labels.append(item["R_ub"])
-            labels.append(item["B_lb"])
-            labels.append(item["G_lb"])
-            labels.append(item["R_lb"])
-        else:
-            labels.append(item["R_ub"])
-            labels.append(item["G_ub"])
-            labels.append(item["B_ub"])
-            labels.append(item["R_lb"])
-            labels.append(item["G_lb"])
-            labels.append(item["B_lb"])
-
-        # if random.random() > 0.5 and item.visible==0 and self.augment: #full_body
-            # height = img.shape[0]
-            # img = img[:height//2,:,:]
-
-#        if self.augment:
-#            img = self.augmenter(img)
-        if random.random() > 0.5:
-            img = np.fliplr(img)
+        if self.augment:
+            img = self.augmenter(img)
         if self.preprocess:
             img = self.preprocess(img, img_size=self.img_size, padding=self.padding)
         img = np.transpose(img, [2,0,1])
         img = img.astype('float32')/255.
-        # img = np.stack([img,img],axis=0)
-        # print(len(labels))
         labels = torch.Tensor(labels).type(torch.float)
         labels = labels/255.
-        
-        # labels = [labels,labels]
-
         return img,labels,path
 
