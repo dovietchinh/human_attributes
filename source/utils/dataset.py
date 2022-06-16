@@ -45,7 +45,7 @@ class LoadImagesAndLabels(torch.utils.data.Dataset):
                     self.maping_name[classes_name] = index
         if augment:
 #            self.augmenter = RandAugment(augment_params=augment_params)
-            self.augmenter = HumanColorAugment
+            self.augmenter = HumanColorAugment()
             # self.on_epoch_end(n=5000)     
             self.csv =self.csv_origin   
         else:
@@ -72,7 +72,7 @@ class LoadImagesAndLabels(torch.utils.data.Dataset):
         labels.append(item["R_lb"])
 
         if self.augment:
-            img = self.augmenter(img)
+            img,labels = self.augmenter(img,labels)
         if self.preprocess:
             img = self.preprocess(img, img_size=self.img_size, padding=self.padding)
         img = np.transpose(img, [2,0,1])

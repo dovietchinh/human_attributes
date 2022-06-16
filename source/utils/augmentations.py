@@ -345,11 +345,11 @@ class HumanColorAugment():
     """
     augmentation for human color project
     """
-    def __init__(self):
+    def __init__(self,**kwargs):
         pass
     
     def multiply(self,img,labels):
-        channel = cv2.split(img)
+        channel = list(cv2.split(img))
         a = random.random() * 0.1 + 0.95
         b = random.random() * 0.1 + 0.95
         c = random.random() * 0.1 + 0.95
@@ -386,7 +386,7 @@ class HumanColorAugment():
         return img,labels
 
     def add(self,img,labels):
-        channel = cv2.split()
+        channel = list(cv2.split(img))
         a = random.random() * 10 - 5
         b = random.random() * 10 - 5
         c = random.random() * 10 - 5
