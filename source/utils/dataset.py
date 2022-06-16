@@ -72,9 +72,31 @@ class LoadImagesAndLabels(torch.utils.data.Dataset):
         labels.append(item["R_lb"])
 
         if self.augment:
-            img,labels = self.augmenter(img,labels)
+            #for _ in range(1000):
+            img,labels = self.augmenter(img.copy(),labels)
+             #   height,width,_ = img.shape
+             #   temp_ub = np.ones((height//2,width,3), dtype="uint8")
+             #   temp_lb = np.ones((height - height//2,width,3), dtype="uint8")
+             #   temp_ub[:,:,0] *= int(labels[0])
+             #   temp_ub[:,:,1] *= int(labels[1])
+             #   temp_ub[:,:,2] *= int(labels[2])
+             #   temp_lb[:,:,0] *= int(labels[3])
+             #   temp_lb[:,:,1] *= int(labels[4])
+             #   temp_lb[:,:,2] *= int(labels[5])
+             #   temp = np.concatenate([temp_ub,temp_lb],axis=0)
+             #   img_view = np.concatenate([img,temp],axis=1)
+             #   print(labels)
+             #   cv2.imshow('display',img_view)
+             #   if cv2.waitKey(0) == ord('q'):
+             #       exit()
+
+                
+
+
         if self.preprocess:
             img = self.preprocess(img, img_size=self.img_size, padding=self.padding)
+        
+        
         img = np.transpose(img, [2,0,1])
         img = img.astype('float32')/255.
         labels = torch.Tensor(labels).type(torch.float)

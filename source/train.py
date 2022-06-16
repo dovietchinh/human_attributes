@@ -278,7 +278,7 @@ def train(opt):
                         'meta_data': opt
                     }
         torch.save(ckpt_last,os.path.join(opt.save_dir,'last.pt'))   
-        callback(loss_train_log[-1],loss_val_log[-1],epoch)   
+        callback(loss_train_log,loss_val_log,epoch)   
 
 def parse_opt(know=True):
     parser = argparse.ArgumentParser()

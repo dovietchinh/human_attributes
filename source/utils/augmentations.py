@@ -353,21 +353,20 @@ class HumanColorAugment():
         a = random.random() * 0.1 + 0.95
         b = random.random() * 0.1 + 0.95
         c = random.random() * 0.1 + 0.95
-
         channel[0] = channel[0].astype('float32') * a
         channel[0] = np.clip(channel[0],0,255).astype('uint8')
-        labels[2] = max(min(labels[2]*a,0),255)
-        labels[5] = max(min(labels[5]*a,0),255)
+        labels[2] = max(min(labels[2]*a,255),0)
+        labels[5] = max(min(labels[5]*a,255),0)
 
         channel[1] = channel[1].astype('float32') * b
         channel[1] = np.clip(channel[1],0,255).astype('uint8')
-        labels[1] = max(min(labels[1]*b,0),255)
-        labels[4] = max(min(labels[4]*b,0),255)
+        labels[1] = max(min(labels[1]*b,255),0)
+        labels[4] = max(min(labels[4]*b,255),0)
 
         channel[2] = channel[2].astype('float32') * c
         channel[2] = np.clip(channel[2],0,255).astype('uint8')
-        labels[0] = max(min(labels[0]*c,0),255)
-        labels[3] = max(min(labels[3]*c,0),255)
+        labels[0] = max(min(labels[0]*c,255),0)
+        labels[3] = max(min(labels[3]*c,255),0)
 
         temp = []
         temp.append([channel[0],labels[2],labels[5]])
@@ -390,22 +389,20 @@ class HumanColorAugment():
         a = random.random() * 10 - 5
         b = random.random() * 10 - 5
         c = random.random() * 10 - 5
-
-
         channel[0] = channel[0].astype('float32') + a
         channel[0] = np.clip(channel[0],0,255).astype('uint8')
-        labels[2] = max(min(labels[2]+a,0),255)
-        labels[5] = max(min(labels[5]+a,0),255)
+        labels[2] = max(min(labels[2]+a,255),0)
+        labels[5] = max(min(labels[5]+a,255),0)
 
         channel[1] = channel[1].astype('float32') + b
         channel[1] = np.clip(channel[1],0,255).astype('uint8')
-        labels[1] = max(min(labels[1]+b,0),255)
-        labels[4] = max(min(labels[4]+b,0),255)
+        labels[1] = max(min(labels[1]+b,255),0)
+        labels[4] = max(min(labels[4]+b,255),0)
 
         channel[2] = channel[2].astype('float32') + c
         channel[2] = np.clip(channel[2],0,255).astype('uint8')
-        labels[0] = max(min(labels[0]+c,0),255)
-        labels[3] = max(min(labels[3]+c,0),255)
+        labels[0] = max(min(labels[0]+c,255),0)
+        labels[3] = max(min(labels[3]+c,255),0)
 
         temp = []
         temp.append([channel[0],labels[2],labels[5]])
