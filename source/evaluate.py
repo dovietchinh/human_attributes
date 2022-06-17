@@ -13,6 +13,7 @@ import yaml
 import pandas as pd
 import os
 import numpy as np
+import time 
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
@@ -62,43 +63,28 @@ def evaluate(opt):
     device = select_device(opt.device, model_name=getattr(checkpoint['meta_data'],'model_name'))
     model = model.to(device)
     model.eval()
-
-    y_true = [] 
-    y_pred = [] 
-    for _ in range(len(opt.classes)):
-        y_true.append([])
-        y_pred.append([])
+    criterior = torch.nn.L1Loss(reduction='mean')
+    epoch_loss = 0.0 
     with torch.no_grad(): 
         for i,(imgs,labels,path) in tqdm(enumerate(loader['val']),total=len(loader['val'])):
             imgs = imgs.to(device)
             preds = model.predict(imgs)
-            labels = labels.permute(1,0)
-            labels = [label.to(device).cpu().numpy().ravel() for label in labels]
-            preds = [x.detach().cpu().numpy().argmax(axis=-1).ravel() for x in preds]
+            labels = labels.permute(1,0).to(device)
+            loss = 0 
+            for index in range(len(opt.classes)):
+                loss += criterior(preds[index].view(-1),labels[index])
             
-            
-            
-            for j in range(len(opt.classes)):
-                print(j)
-                print(len(y_pred))
-                y_true[j].append(labels[j])
-                y_pred[j].append(preds[j])
-                
-    y_true = [ np.concatenate(x, axis=0) for x in y_true ]
-    y_pred = [ np.concatenate(x, axis=0) for x in y_pred ]
-    
-    for i,(k,v) in enumerate(opt.classes.items()):
-        y_true_i = y_true[i]
-        y_pred_i = y_pred[i]
-        y_pred_i = y_pred_i[y_true_i!=-1]
-        y_true_i = y_true_i[y_true_i!=-1]
-        np.save(f'y_true_i_{k}.npy',y_true_i)
-        np.save(f'y_pred_i_{k}.npy',y_pred_i)
-        if k=='age2':
-            for asd,fgh in zip(y_true_i,y_pred_i):
-                with open('abc.txt','a') as f:
-                    f.write(f"{asd} {fgh}\n")
-            continue
+            #labels = [label.to(device).cpu().numpy().ravel() for label in labels]
+            #preds = [x.detach().cpu().numpy().argmax(axis=-1).ravel() for x in preds]
+            epoch_loss += loss * imgs.size(0)
+    epoch_loss = epoch_loss / len(loader['val'].dataset)
+    print(epoch_loss)    
+    localtime = time.localtime()
+    year = localtime.tm_year
+    day = localtime.tm_mday
+    month = localtime.tm_mon
+    with open(os.path.join(opt.save_dir,'evaluate.txt'),'w') as f:
+        f.write(f"{year}_{month}_{day} : {loss}\n")
         
 def parse_opt(know):
     parser = argparse.ArgumentParser()
@@ -124,7 +110,6 @@ def main():
         setattr(opt,k,v) 
     assert isinstance(opt.classes,dict), "Invalid format of classes in data_config.yaml"
     # assert len(opt.task_weights) == len(opt.classes), "task weight should has the same length with classes"
-    opt.classes['age2'] = list(range(76))
     evaluate(opt)
 
 if __name__ =='__main__':

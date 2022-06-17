@@ -41,12 +41,6 @@ train_csv : [
         "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v1_task_0033.csv",
         "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v1_task_0034.csv",
         "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v1_task_0035.csv",
-        "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v1_task_0036.csv",
-        "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v1_task_0037.csv",
-        "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v1_task_0038.csv",
-        "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v1_task_0039.csv",
-        "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v1_task_0040.csv",
-        "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v1_task_0041.csv",
         "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v2_task_0000.csv",
         "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v2_task_0001.csv",
         "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v2_task_0002.csv",
@@ -126,11 +120,6 @@ train_csv : [
         "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v2_task_0077.csv",
         "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v2_task_0078.csv",
         "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v2_task_0079.csv",
-        "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v2_task_0080.csv",
-        "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v2_task_0081.csv",
-        "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v2_task_0082.csv",
-        "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v2_task_0083.csv",
-        "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v2_task_0084.csv",
         "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/vin3s_141_171_task_0000.csv",
         "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/vin3s_141_171_task_0001.csv",
         "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/vin3s_141_171_task_0002.csv",
@@ -183,21 +172,26 @@ train_csv : [
         "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/vin3s_23022022_task_0012.csv",
         "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/vin3s_23022022_task_0013.csv",
         "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/vin3s_23022022_task_0014.csv",
-        "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/vin3s_23022022_task_0015.csv",
-        "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/vin3s_23022022_task_0016.csv",
-        "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/vin3s_2.csv",
         "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/vin3s_entry_task_0000.csv",
         "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/vin3s_entry_task_0001.csv",
-        "/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/vin3s_entry_task_0002.csv",
-
 ]
-# val_csv : [
-#     # /u01/Intern/chinhdv/code/multi-task-classification/human_attribute_project/trainPA100K.csv,
-#     /u01/Intern/chinhdv/code/multi-task-classification/human_attribute_project/0812_hmat_test.csv
-# ]
 test_csv : [
-    ]
-
+"/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/vin3s_entry_task_0002.csv",
+"/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/vin3s_23022022_task_0015.csv",
+"/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/vin3s_23022022_task_0016.csv",
+"/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v2_task_0080.csv",
+"/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v2_task_0081.csv",
+"/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v2_task_0082.csv",
+"/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v2_task_0083.csv",
+"/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v2_task_0084.csv",
+"/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v1_task_0036.csv",
+"/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v1_task_0037.csv",
+"/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v1_task_0038.csv",
+"/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v1_task_0039.csv",
+"/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v1_task_0040.csv",
+"/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/body_part_detection_v1_task_0041.csv",
+"/u01/chinhdv/code/human_attributes_omg/scripts/RAP_YOLO/csv/vin3s_2.csv",
+]
 classes:
     R_ub: ['None']
     G_ub: ['None']

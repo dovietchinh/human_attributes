@@ -1,0 +1,5 @@
+outs:
+- md5: d06662650dadc0e932470a385d669818.dir
+  size: 34164605
+  nfiles: 184
+  path: csv_RAP_YOLO

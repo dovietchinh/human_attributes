@@ -182,11 +182,11 @@ def train(opt):
         epoch_loss = 0.0
         warmup_iteration = max(opt.hyp['warmup_epochs']*nb,1000)
         for i, (imgs, labels, _) in tqdm(pbar,total=nb,desc='training',leave=False):
-            labels = labels.permute(1,0)
+            labels = labels.permute(1,0).to(device)
             
             ni = i + nb * epoch
             imgs = imgs.to(device)
-            labels = [label.to(device) for label in labels]
+#            labels = [label.to(device) for label in labels]
             # Warm-up training
             if ni <= warmup_iteration:
                 xi = [0, warmup_iteration]  # x interp
