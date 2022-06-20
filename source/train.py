@@ -159,8 +159,8 @@ def train(opt):
         #else: 
         class_weights = None
         #criteriors.append(FocalLoss(gamma=opt.gamma,class_weights=class_weights,label_smoothing=opt.label_smoothing,reduction='sum'))
-        #criteriors.append(torch.nn.MSELoss(reduction='mean'))
-        criteriors.append(torch.nn.L1Loss(reduction='mean'))
+        criteriors.append(torch.nn.MSELoss(reduction='mean'))
+        #criteriors.append(torch.nn.L1Loss(reduction='mean'))
 
     if not isinstance(opt.task_weights,list):
         task_weights = [opt.task_weights]
