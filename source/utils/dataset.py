@@ -99,7 +99,8 @@ class LoadImagesAndLabels(torch.utils.data.Dataset):
         
         img = np.transpose(img, [2,0,1])
         img = img.astype('float32')/255.
-        labels = torch.Tensor(labels).type(torch.float)
+        labels = torch.Tensor(labels).type(torch.float) # 2,3
+        labels = labels.view(2,3)
         labels = labels/255.
         return img,labels,path
 

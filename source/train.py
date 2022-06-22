@@ -158,10 +158,11 @@ def train(opt):
         #    class_weights = class_weights.to(device)
         #else: 
         class_weights = None
-        #criteriors.append(FocalLoss(gamma=opt.gamma,class_weights=class_weights,label_smoothing=opt.label_smoothing,reduction='sum'))
+        #criteriors.append(FocalLoss(gammaO=opt.gamma,class_weights=class_weights,label_smoothing=opt.label_smoothing,reduction='sum'))
         criteriors.append(torch.nn.MSELoss(reduction='mean'))
         #criteriors.append(torch.nn.L1Loss(reduction='mean'))
-
+    criterior_l1 = torch.nn.L1Loss(reduction='mean')
+    criterior_l2 = torch.nn.MSELoss(reduction='mean')
     if not isinstance(opt.task_weights,list):
         task_weights = [opt.task_weights]
     
@@ -182,25 +183,26 @@ def train(opt):
         epoch_loss = 0.0
         warmup_iteration = max(opt.hyp['warmup_epochs']*nb,1000)
         for i, (imgs, labels, _) in tqdm(pbar,total=nb,desc='training',leave=False):
-            labels = labels.permute(1,0).to(device)
-            
-            ni = i + nb * epoch
-            imgs = imgs.to(device)
+            #ni = i + nb * epoch
 #            labels = [label.to(device) for label in labels]
             # Warm-up training
-            if ni <= warmup_iteration:
-                xi = [0, warmup_iteration]  # x interp
-                for j, x in enumerate(optimizer.param_groups):
+            #if ni <= warmup_iteration:
+                #xi = [0, warmup_iteration]  # x interp
+                #for j, x in enumerate(optimizer.param_groups):
                     #bias lr falls from 0.1 to lr0, all other lrs rise from 0.0 to lr0
-                    x['lr'] = np.interp(ni, xi, [opt.hyp['warmup_bias_lr'] if j == 2 else 0.0, opt.hyp['lr0']]) #x['initial_lr'] * lf(epoch)])
-                    if 'momentum' in x:
-                        x['momentum'] = np.interp(ni, xi, [opt.hyp['warmup_momentum'], opt.hyp['momentum']])
+                 #   x['lr'] = np.interp(ni, xi, [opt.hyp['warmup_bias_lr'] if j == 2 else 0.0, opt.hyp['lr0']]) #x['initial_lr'] * lf(epoch)])
+                 #   if 'momentum' in x:
+                 #       x['momentum'] = np.interp(ni, xi, [opt.hyp['warmup_momentum'], opt.hyp['momentum']])
             
             
             with torch.set_grad_enabled(cuda):
+                labels = labels.permute(1,0,2).to(device)
+                imgs = imgs.to(device)
                 preds = model(imgs)
                 loss= 0
-                for index,criterior in enumerate(criteriors):
+                loss += criterior_l1(preds[0],labels[0]) + opt["l2_ratio"]*criterior_l2(preds[0],labels[0])
+                loss += criterior_l1(preds[1],labels[1]) + opt["l2_ratio"]*criterior_l2(preds[1],labels[1])
+        #        for index,criterior in enumerate(criteriors):
                     # LOGGER.debug(preds[index])
                     # LOGGER.debug(labels[index])
                     # [ 1 ,2  3 , 1, 2 ] 
@@ -211,9 +213,9 @@ def train(opt):
                     #print("preds : ",preds[index])
                     #print("labels: ",labels[index])
                     
-                    loss_temp = opt.task_weights[index]*criterior(preds[index].view(-1),labels[index]) #/ len(labels[index])
+         #           loss_temp = opt.task_weights[index]*criterior(preds[index].view(-1),labels[index]) #/ len(labels[index])
                     #print(loss_temp)
-                    loss += loss_temp
+         #           loss += loss_temp
 #                print(loss)
                 #exit()
                 
@@ -234,18 +236,18 @@ def train(opt):
             y_pred.append([])
         with torch.no_grad():
             for i, (imgs, labels, _) in tqdm(enumerate(loader['val']),total=len(loader['val']),desc='evaluating',leave=False):
-                labels = labels.permute(1,0)
-                
-
-                imgs = imgs.to(device)
-                labels = [label.to(device) for label in labels]
+                labels = labels.permute(1,0,2)
+                labels = labels.to(device)
+                imgs = imgs.to(device) 
                 preds = model(imgs)
                 loss = 0
-                for index,criterior in enumerate(criteriors):
+                loss += criterior_l1(preds[0],labels[0]) + opt["l2_ratio"]*criterior_l2(preds[0],labels[0])
+                loss += criterior_l1(preds[1],labels[1]) + opt["l2_ratio"]*criterior_l2(preds[1],labels[1])
+ #               for index,criterior in enumerate(criteriors):
                     #loss += opt.task_weights[index]*criterior(preds[index][labels[index]!=-1],(labels[index][labels[index]!=-1]).type(torch.uint8)) / (labels[index]!=-1).sum()                      
 #                    loss += opt.task_weights[index]*criterior(preds[index][labels[index]!=-1],(labels[index][labels[index]!=-1]).type(torch.float)) / (labels[index]!=-1).sum()                      
-                    loss_temp = opt.task_weights[index]*criterior(preds[index].view(-1),labels[index])# / len(labels[index])
-                    loss += loss_temp
+  #                  loss_temp = opt.task_weights[index]*criterior(preds[index].view(-1),labels[index])# / len(labels[index])
+#                    loss += loss_temp
                 epoch_loss += loss * imgs.size(0) # imgs.size = batch_size
 
         epoch_loss = epoch_loss/len(loader['val'].dataset)
