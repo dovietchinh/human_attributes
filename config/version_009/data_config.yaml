@@ -201,12 +201,14 @@ test_csv : [
 
 ]
 classes:
-    R_ub: ["None"]
-    G_ub: ["None"]
-    B_ub: ["None"]
-    R_lb: ["None"]
-    G_lb: ["None"]
-    B_lb: ["None"]
+    #R_ub: ["None"]
+    #G_ub: ["None"]
+    #B_ub: ["None"]
+    #R_lb: ["None"]
+    #G_lb: ["None"]
+    #B_lb: ["None"]
+    ub : ["B","G","R"]
+    lb : ["B","G","R"]
   #  staff       : ["no", SalesAssistant, TechnicalStaff]
 
 format_index: True

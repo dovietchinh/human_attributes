@@ -200,8 +200,8 @@ def train(opt):
                 imgs = imgs.to(device)
                 preds = model(imgs)
                 loss= 0
-                loss += criterior_l1(preds[0],labels[0]) + opt["l2_ratio"]*criterior_l2(preds[0],labels[0])
-                loss += criterior_l1(preds[1],labels[1]) + opt["l2_ratio"]*criterior_l2(preds[1],labels[1])
+                loss += criterior_l1(preds[0],labels[0]) + opt.l2_ratio * criterior_l2(preds[0],labels[0])
+                loss += criterior_l1(preds[1],labels[1]) + opt.l2_ratio * criterior_l2(preds[1],labels[1])
         #        for index,criterior in enumerate(criteriors):
                     # LOGGER.debug(preds[index])
                     # LOGGER.debug(labels[index])
@@ -241,8 +241,8 @@ def train(opt):
                 imgs = imgs.to(device) 
                 preds = model(imgs)
                 loss = 0
-                loss += criterior_l1(preds[0],labels[0]) + opt["l2_ratio"]*criterior_l2(preds[0],labels[0])
-                loss += criterior_l1(preds[1],labels[1]) + opt["l2_ratio"]*criterior_l2(preds[1],labels[1])
+                loss += criterior_l1(preds[0],labels[0]) + opt.l2_ratio * criterior_l2(preds[0],labels[0])
+                loss += criterior_l1(preds[1],labels[1]) + opt.l2_ratio * criterior_l2(preds[1],labels[1])
  #               for index,criterior in enumerate(criteriors):
                     #loss += opt.task_weights[index]*criterior(preds[index][labels[index]!=-1],(labels[index][labels[index]!=-1]).type(torch.uint8)) / (labels[index]!=-1).sum()                      
 #                    loss += opt.task_weights[index]*criterior(preds[index][labels[index]!=-1],(labels[index][labels[index]!=-1]).type(torch.float)) / (labels[index]!=-1).sum()                      
